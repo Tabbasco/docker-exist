@@ -15,6 +15,7 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8080 8443
 ENV EXIST_HOME /opt/exist
+ENV EXIST_PASSWORD admin
 WORKDIR /opt/exist
 VOLUME /opt/exist-data
 
