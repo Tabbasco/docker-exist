@@ -19,4 +19,4 @@ ENV EXIST_PASSWORD admin
 WORKDIR /opt/exist
 VOLUME /opt/exist-data
 
-CMD /entrypoint.sh
+CMD ["sh", "-c", "/entrypoint.sh"]
