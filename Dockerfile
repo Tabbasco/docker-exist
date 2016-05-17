@@ -1,21 +1,21 @@
-# https://github.com/xmlio/exist
 FROM java:latest 
-MAINTAINER Anthony Frey <anthony@requestresponse.com>
+MAINTAINER Andreas Jung <info@zopyx.com>
 
 RUN apt-get update
-RUN apt-get install -y curl expect
+RUN apt-get install -y curl expect cadaver
 
-WORKDIR /tmp
-RUN curl -L -o eXist-db-setup-latest.jar http://sourceforge.net/projects/exist/files/latest/download?source=files
+WORKDIR /root
+RUN curl -LO http://downloads.sourceforge.net/exist/Stable/2.2/eXist-db-setup-2.2.jar
+ADD exist-setup.cmd /root/exist-setup.cmd
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-ADD exist-setup.cmd /tmp/exist-setup.cmd
-RUN expect -f exist-setup.cmd
-RUN rm eXist-db-setup-latest.jar exist-setup.cmd
-RUN sed -e "s/\"\${JAVA_RUN/exec \"\${JAVA_RUN/" -i /opt/exist/bin/startup.sh
-
-VOLUME /opt/exist-data
+#RUN expect -f exist-setup.cmd
+#RUN rm eXist-db-setup-2.2.jar exist-setup.cmd
 
 EXPOSE 8080 8443
 ENV EXIST_HOME /opt/exist
 WORKDIR /opt/exist
-CMD ["/opt/exist/bin/startup.sh"]
+VOLUME /opt/exist-data
+
+CMD /entrypoint.sh
